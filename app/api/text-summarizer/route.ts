@@ -1,10 +1,9 @@
 import { createAgentHandler, createAnthropic } from 'tetto-sdk/agent';
-import type { AgentRequestContext } from 'tetto-sdk/agent';
 
 const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
 export const POST = createAgentHandler({
-  async handler(input: { text: string }, context: AgentRequestContext) {
+  async handler(input: { text: string }) {
     const message = await anthropic.messages.create({
       model: 'claude-3-5-haiku-20241022',
       max_tokens: 300,
