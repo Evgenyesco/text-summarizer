@@ -1,26 +1,12 @@
 {
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.128.0",
-    "next": "^14.2.35",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tetto-sdk": "^2.6.0"
-  },
   "name": "text-summarizer",
   "version": "1.0.0",
-  "main": "index.js",
-  "devDependencies": {
-    "@types/react": "19.3.0",
-    "typescript": "5.9.3",
-    "vercel": "^61.0.0"
-  },
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "next build",
-    "start": "next start"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
+    "express": "^4.21.0"
+  }
 }
