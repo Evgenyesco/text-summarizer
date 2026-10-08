@@ -5,6 +5,15 @@ const Anthropic = require('@anthropic-ai/sdk');
 const app = express();
 app.use(express.json());
 
+// CORS — чтобы Tetto мог делать запросы
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Tetto-Signature');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
+
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 app.get('/debug', (req, res) => {
@@ -14,6 +23,18 @@ app.get('/debug', (req, res) => {
   });
 });
 
+// GET на /api/text-summarizer — для проверки от Tetto
+app.get('/api/text-summarizer', (req, res) => {
+  res.json({
+    status: 'ok',
+    name: 'TextSummarizer',
+    description: 'Summarizes long text into 2-3 concise sentences using Claude AI',
+    input_schema: { text: 'string' },
+    output_schema: { summary: 'string' },
+  });
+});
+
+// POST — основная логика
 app.post('/api/text-summarizer', async (req, res) => {
   try {
     const { text } = req.body.input || req.body;
