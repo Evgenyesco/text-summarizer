@@ -1,25 +1,24 @@
+require('dotenv').config();
 const express = require('express');
 const Anthropic = require('@anthropic-ai/sdk');
 
 const app = express();
 app.use(express.json());
 
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
 app.get('/debug', (req, res) => {
   res.json({
     has_key: !!process.env.ANTHROPIC_API_KEY,
     key_length: (process.env.ANTHROPIC_API_KEY || '').length,
-    has_secret: !!process.env.TETTO_ENDPOINT_SECRET,
-    port: process.env.PORT,
   });
 });
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 app.post('/api/text-summarizer', async (req, res) => {
   try {
     const { text } = req.body.input || req.body;
     const message = await anthropic.messages.create({
-      model: 'claude-3-5-haiku-20241022',
+      model: 'claude-haiku-4-5',
       max_tokens: 300,
       messages: [{ role: 'user', content: `Summarize this text in 2-3 sentences:\n\n${text}` }],
     });
